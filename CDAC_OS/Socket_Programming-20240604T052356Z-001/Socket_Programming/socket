@@ -1,0 +1,74 @@
+Convert host-to-host packet delivery service into
+a process-to-process communication channel
+
+Convert host-to-host packet delivery service into
+a process-to-process communication channel
+
+Socket: An interface between an application
+process and transport layer
+– The application process can send/receive messages
+to/from another application process (local or
+remote)via a socket
+
+
+Stream Sockets (SOCK_STREAM)
+– Connection oriented
+– Rely on TCP to provide reliable two-way connected
+communication
+
+Datagram Sockets (SOCK_DGRAM)
+– Rely on UDP
+– Connection is unreliable
+
+int socket(int domain, int type, int protocol);
+– domain should be set to AF_INET
+– type can be SOCK_STREAM or SOCK_DGRAM
+– set protocol to 0 to have socket choose the correct
+protocol based on type
+– socket() returns a socket descriptor for use in later
+system calls or -1 on error
+
+
+struct sockaddr_in: A parallel structure that makes
+it easy to reference elements of the socket address
+
+struct sockaddr_in {
+short int sin_family; // set to AF_INET
+unsigned short int sin_port; // Port number
+struct in_addr sin_addr; // Internet address
+unsigned char sin_zero[8]; //set to all zeros
+}
+
+sin_port and sin_addr must be in Network Byte Order
+
+socket()
+bind()
+listen()
+accept()
+
+
+
+The two functions are for communicating over
+stream sockets or connected datagram sockets.
+int send(int sockfd, const void *msg, int len, int
+flags);
+– sockfd is the socket descriptor you want to send data to
+(returned by socket() or got from accept())
+– msg is a pointer to the data you want to send
+– len is the length of that data in bytes
+– set flags to 0 for now
+– sent() returns the number of bytes actually sent (may
+be less than the number you told it to send) or -1 on
+error
+
+int recv(int sockfd, void *buf, int len, int flags);
+– sockfd is the socket descriptor to read from
+– buf is the buffer to read the information into
+– len is the maximum length of the buffer
+– set flags to 0 for now
+– recv() returns the number of bytes actually read into
+the buffer or -1 on error
+– If recv() returns 0, the remote side has closed
+connection on you
+
+
